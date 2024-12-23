@@ -1,2 +1,2 @@
 # ha-conf
-My Home Assistant Congig
+My Home Assistant Config
