@@ -9,5 +9,20 @@ services:
     environment:
       - TZ=Europe/Moscow
     volumes:
-      - ./config:/config
+      - ./data/ha/config:/config
       - /etc/localtime:/etc/localtime:ro
+
+  hass-configurator:
+    container_name: hass-configurator
+    image: causticlab/hass-configurator-docker
+    restart: unless-stopped
+    ports:
+      - "3218:3218/tcp"
+    environment:
+      - HC_BASEPATH=/hass-config
+      - HC_USERNAME=${HASS_CONFIGURATOR_USERNAME}
+      - HC_PASSWORD=${HASS_CONFIGURATOR_PASSWORD}
+      - DIRSFIRST=true
+    volumes:
+      - ./data/hass-configurator/config:/config
+      - ./data/ha/config:/hass-config
