@@ -7,3 +7,6 @@ down:
 logs:
 	docker compose logs
 
+create_mosquitto_conf:
+	touch ./data/mosquitto/config/mosquitto.conf
+

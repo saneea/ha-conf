@@ -11,6 +11,8 @@ services:
     volumes:
       - ./data/ha/config:/config
       - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      - mosquitto
 
   hass-configurator:
     container_name: hass-configurator
@@ -26,3 +28,16 @@ services:
     volumes:
       - ./data/hass-configurator/config:/config
       - ./data/ha/config:/hass-config
+
+  mosquitto:
+    container_name: mosquitto
+    image: eclipse-mosquitto
+    restart: unless-stopped
+    ports:
+      - "1883:1883/tcp"
+    environment:
+      - TZ=Europe/Moscow
+    volumes:
+      - ./data/mosquitto/config:/mosquitto/config
+      - ./data/mosquitto/data:/mosquitto/data
+      - ./data/mosquitto/log:/mosquitto/log
