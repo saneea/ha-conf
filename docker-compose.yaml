@@ -41,3 +41,19 @@ services:
       - ./data/mosquitto/config:/mosquitto/config
       - ./data/mosquitto/data:/mosquitto/data
       - ./data/mosquitto/log:/mosquitto/log
+
+  zigbee2mqtt:
+    container_name: zigbee2mqtt
+    image: koenkk/zigbee2mqtt:1.42.0
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - TZ=Europe/Moscow
+    devices:
+      - ${ZIGBEE_ADAPTER_TTY}:/dev/ttyACM0
+    volumes:
+      - ./data/zigbee2mqtt:/app/data
+      - /run/udev:/run/udev:ro
+    depends_on:
+      - mosquitto
