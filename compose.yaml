@@ -1,7 +1,7 @@
 services:
   ha:
     container_name: ha
-    image: ghcr.io/home-assistant/home-assistant:stable
+    image: homeassistant/home-assistant:2024.12.5
     restart: unless-stopped
     privileged: true
     ports:
@@ -16,7 +16,7 @@ services:
 
   hass-configurator:
     container_name: hass-configurator
-    image: causticlab/hass-configurator-docker
+    image: causticlab/hass-configurator-docker:0.5.2
     restart: unless-stopped
     ports:
       - "3218:3218/tcp"
@@ -31,7 +31,7 @@ services:
 
   mosquitto:
     container_name: mosquitto
-    image: eclipse-mosquitto
+    image: eclipse-mosquitto:2.0.20
     restart: unless-stopped
     environment:
       - TZ=Europe/Moscow
