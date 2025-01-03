@@ -1,0 +1,14 @@
+permit_join: false
+homeassistant: true
+mqtt:
+  base_topic: zigbee2mqtt
+  server: mqtt://mqtt:1883
+  user: '!secret.yaml user'
+  password: '!secret.yaml password'
+serial:
+  port: /dev/ttyACM0
+  adapter: ezsp #you may need to remove this line or specify your adapter type
+frontend:
+  port: 8080
+advanced:
+  network_key: GENERATE
