@@ -12,10 +12,10 @@ services:
       - ./data/ha/config:/config
       - /etc/localtime:/etc/localtime:ro
     depends_on:
-      - mosquitto
+      - mqtt
 
-  hass-configurator:
-    container_name: hass-configurator
+  ha-conf:
+    container_name: ha-conf
     image: causticlab/hass-configurator-docker:0.5.2
     restart: unless-stopped
     ports:
@@ -26,22 +26,22 @@ services:
       - HC_PASSWORD=${HASS_CONFIGURATOR_PASSWORD}
       - HC_DIRSFIRST=true
     volumes:
-      - ./data/hass-configurator/config:/config
+      - ./data/ha-conf/config:/config
       - ./data/ha/config:/hass-config
 
-  mosquitto:
-    container_name: mosquitto
+  mqtt:
+    container_name: mqtt
     image: eclipse-mosquitto:2.0.20
     restart: unless-stopped
     environment:
       - TZ=Europe/Moscow
     volumes:
-      - ./data/mosquitto/config:/mosquitto/config
-      - ./data/mosquitto/data:/mosquitto/data
-      - ./data/mosquitto/log:/mosquitto/log
+      - ./data/mqtt/config:/mosquitto/config
+      - ./data/mqtt/data:/mosquitto/data
+      - ./data/mqtt/log:/mosquitto/log
 
-  zigbee2mqtt:
-    container_name: zigbee2mqtt
+  z2m:
+    container_name: z2m
     image: koenkk/zigbee2mqtt:1.42.0
     restart: unless-stopped
     ports:
@@ -51,7 +51,7 @@ services:
     devices:
       - ${ZIGBEE_ADAPTER_TTY}:/dev/ttyACM0
     volumes:
-      - ./data/zigbee2mqtt/app/data:/app/data
+      - ./data/z2m/app/data:/app/data
       - /run/udev:/run/udev:ro
     depends_on:
-      - mosquitto
+      - mqtt
