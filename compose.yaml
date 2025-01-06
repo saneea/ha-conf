@@ -11,6 +11,7 @@ services:
     volumes:
       - ./data/ha/config:/config
       - /etc/localtime:/etc/localtime:ro
+      - /run/dbus:/run/dbus:ro
     depends_on:
       - mqtt
 
