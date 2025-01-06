@@ -1,14 +1,4 @@
-
-# Loads default set of integrations. Do not remove.
-default_config:
-
-# Load frontend themes from the themes folder
-frontend:
-  themes: !include_dir_merge_named themes
-
-automation: !include automations.yaml
-script: !include scripts.yaml
-scene: !include scenes.yaml
+echo "
 
 command_line:
   - sensor:
@@ -18,3 +8,4 @@ command_line:
       unit_of_measurement: 'C'
       scan_interval: 60
       value_template: '{{ value | multiply(0.001) | round(3) }}'
+" >> ./data/ha/config/configuration.yaml
