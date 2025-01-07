@@ -1,6 +1,5 @@
 services:
   ha:
-    container_name: ha
     image: homeassistant/home-assistant:2024.12.5
     restart: unless-stopped
     privileged: true
@@ -16,7 +15,6 @@ services:
       - mqtt
 
   ha-conf:
-    container_name: ha-conf
     image: causticlab/hass-configurator-docker:0.5.2
     restart: unless-stopped
     ports:
@@ -31,7 +29,6 @@ services:
       - ./data/ha/config:/hass-config
 
   mqtt:
-    container_name: mqtt
     image: eclipse-mosquitto:2.0.20
     restart: unless-stopped
     environment:
@@ -42,7 +39,6 @@ services:
       - ./data/mqtt/log:/mosquitto/log
 
   z2m:
-    container_name: z2m
     image: koenkk/zigbee2mqtt:1.42.0
     restart: unless-stopped
     ports:
