@@ -75,7 +75,7 @@ It is just my **Home Assistant** config
    ```
 2. Update connection settings to MQTT from **Home Assistant**
 3. Update connection settings to MQTT from **Zigbee2MQTT** in file `./data/z2m/app/data/configuration.yaml`
-   ```
+   ```yaml
    ...
    mqtt:
      server: mqtt://mqtt:1883
