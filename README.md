@@ -1,6 +1,18 @@
 # ha-conf
 
-It is just my **Home Assistant** config
+## General
+
+It is just my **Home Assistant** configuration
+
+This configuration assume run **Home Assistant** as docker container.
+
+In order to extend **Home Assistant** possibilities or do maintenance a few additional containers are needed.
+
+List of services (containers):
+- ha - Home Assistant
+- ha-conf - just web interface for configuring **Home Assistant** files
+- mqtt - MQTT broker is some type of gateway which join different devices and services via event messages in queue
+- z2m - Zigbee2MQTT is bridge between MQTT broker and zigbee devices
 
 ## Installation steps
 
