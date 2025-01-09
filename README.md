@@ -12,7 +12,7 @@ List of services (containers):
 - ha - Home Assistant
 - ha-conf - just web interface for configuring **Home Assistant** files
 - mqtt - MQTT broker is some type of gateway which join different devices and services via event messages in queue
-- z2m - Zigbee2MQTT is bridge between MQTT broker and zigbee devices
+- z2m - Zigbee2MQTT is a bridge between MQTT broker and zigbee devices
 
 ## Installation steps
 
@@ -98,7 +98,7 @@ List of services (containers):
 
 1. Ensure your `mqtt` docker container is run
    ```sh
-   docker compose stats
+   docker compose stats mqtt
    ```
    you should see table with info about your container
    ```
