@@ -113,7 +113,30 @@ List of services (containers):
    ```sh
    docker compose exec mqtt /bin/sh
    ```
-3. todo: do something like:
+3. Start command to change password for user `ha` in interactive mode
    ```sh
    mosquitto_passwd /mosquitto/config/password_file ha
+   ```
+   This command just change password hash in file `/mosquitto/config/password_file` inside container
+   (i.e. `./data/mqtt/config/password_file` on you host machine). Actually you can even use another file: just edit `./data/mqtt/config/mosquitto.conf` file (property `password_file`).
+4. Change password for user `z2m` the same way
+   ```sh
+   mosquitto_passwd /mosquitto/config/password_file z2m
+   ```
+   It is recommended to use different password
+5. Type `exit` in order to finish your command shell session inside `mqtt` container
+   ```sh
+   exit
+   ```
+6. Restart `mqtt` container to reload configs with new passwords
+   ```sh
+   docker compose restart mqtt
+   ```
+7. Go to **Home Assistant** web interface
+8. Go to `Settings` -> `Devices & services` -> `MQTT`
+9. Reconfigure password for MQTT connection
+10. Change password for `z2m` client in file `./data/z2m/app/data/secret.yaml` in property `password`. This file (`secret.yaml`) is just used from main z2m config file `configuration.yaml`
+11. Restart `z2m` container to reload configs with new password
+   ```sh
+   docker compose restart z2m
    ```
