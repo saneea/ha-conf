@@ -14,6 +14,26 @@ List of services (containers):
 - mqtt - MQTT broker is some type of gateway which join different devices and services via event messages in queue
 - z2m - Zigbee2MQTT is a bridge between MQTT broker and zigbee devices
 
+## Prepare host machine
+
+### Install Bluetooth dependencies
+1. Update package lists
+   ```shell
+   apt update
+   ```
+2. Install D-Bus broker
+   ```shell
+   apt install dbus-broker
+   ```
+3. Enable starting D-Bus broker after OS boot
+   ```shell
+   systemctl enable dbus-broker.service
+   ```
+4. Install BlueZ package
+   ```shell
+   apt install bluez
+   ```
+
 ## Installation steps
 
 1. Clone the repo from
