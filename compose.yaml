@@ -52,3 +52,16 @@ services:
       - /run/udev:/run/udev:ro
     depends_on:
       - mqtt
+
+  node-red:
+    image: nodered/node-red
+    restart: unless-stopped
+    ports:
+      - "1880:1880"
+    environment:
+      - TZ=Europe/Moscow
+    volumes:
+      - ./data/node-red/data:/data
+    depends_on:
+      - ha
+      - mqtt
