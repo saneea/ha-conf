@@ -4,5 +4,5 @@ tar							\
 --exclude='data/mqtt/log'				\
 --exclude='data/z2m/app/data/log'			\
 -czvf							\
-my-back.tar.gz						\
+ha-stack-data-$(date '+%F--%H-%M-%S').tar.gz		\
 ./data
