@@ -1,2 +1,5 @@
 /data
 .env
+
+### IntelliJ IDEA ###
+.idea
