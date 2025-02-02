@@ -57,7 +57,12 @@ List of services (containers):
    ```sh
    chown -R root:root ./data
    ```
-6. Find out your Zigbee stick device file
+6. Create `node-red` dirs with uid 1000 owner.
+   ```sh
+   mkdir -p ./data/node-red/data
+   chown -R 1000:1000 ./data/node-red
+   ```
+7. Find out your Zigbee stick device file
    ```sh
    ls /dev/serial/by-id
    ```
@@ -68,11 +73,11 @@ List of services (containers):
    drwxr-xr-x 4 root root 80 Jan  7 22:08 ..
    lrwxrwxrwx 1 root root 13 Jan  7 22:08 usb-Itead_Sonoff_Zigbee_3.0_USB_Dongle_Plus_V2_... -> ../../ttyUSB0
    ```
-7. Specify full path to your Zigbee stick device file (from previous step) into `.env` file as variable `ZIGBEE_ADAPTER_TTY`
+8. Specify full path to your Zigbee stick device file (from previous step) into `.env` file as variable `ZIGBEE_ADAPTER_TTY`
    ```sh
    vi ./.env
    ```
-8. Start your docker compose stack with shortcut command
+9. Start your docker compose stack with shortcut command
    ```sh
    make up
    ```
@@ -80,11 +85,15 @@ List of services (containers):
    ```sh
    docker compose up -d
    ```
-9. Add web panels in HA web interface
-   1. Go to `Settings` -> `Dashboards` -> `Add dashboard` -> `Webpage`
-   2. Add **HA Editor**: `http://<ha-host>:3218`
-   3. Add **Zigbee2MQTT** web interface: `http://<ha-host>:8080`
-10. Add **MQTT** integration
+10. Go to `Settings` -> `Dashboards` -> `Add dashboard` -> `Webpage` and add web panels in HA web interface
+
+   | Service     | Url                       |
+   |-------------|---------------------------|
+   | HA Editor   | http://<ha-host>:**3218** |
+   | Zigbee2MQTT | http://<ha-host>:**8080** |
+   | Node-RED    | http://<ha-host>:**1880** |
+
+11. Add **MQTT** integration
     1. Go to `Settings` -> `Devices & services` -> `Add integration` -> `MQTT` -> `MQTT`
     2. Fill `broker` field with value `mqtt`.
        Why does it work? Your docker compose file `compose.yaml` contains service with name `mqtt`. By default, docker use the name of service as hostname for internal docker network.
@@ -94,6 +103,12 @@ List of services (containers):
        You can change it (see [Change MQTT broker port](#change-mqtt-broker-port) section).
     4. Fill `username` and `password` fields with values `ha` and `ha-change-this-password`
        These are default `username` and `password`. You should change them (see [Change MQTT users](#change-mqtt-users) section).
+12. Set up your Node-RED system
+    1. Create **HA** token in order to access from Node-RED to **HA**. Go to **HA** web interface -> you user profile -> `Security` tab -> `Long-lived access tokens`.
+    2. Go to Node-RED menu -> `Manage palette` -> `Install`. Try to find and install `node-red-contrib-home-assistant-websocket` module.
+    3. Use some node in order to connect to **HA**. E.g. `events: all`. Connect to **HA** using security token from previous steps.
+    4. Connect to mqtt: server: `mqtt`, port: `1883`, user: `nodered`, password: `nodered-change-this-password`.
+       These are default username and password. You should change them (see [Change MQTT users](#change-mqtt-users) section).
 
 ## Customization
 
@@ -133,17 +148,14 @@ List of services (containers):
    ```sh
    docker compose exec mqtt /bin/sh
    ```
-3. Start command to change password for user `ha` in interactive mode
+3. Start command `mosquitto_passwd` to change password for the user. Username should be specified as argument.
+   E.g. you need to change password for user `ha` run command
    ```sh
    mosquitto_passwd /mosquitto/config/password_file ha
    ```
    This command just change password hash in file `/mosquitto/config/password_file` inside container
    (i.e. `./data/mqtt/config/password_file` on you host machine). Actually you can even use another file: just edit `./data/mqtt/config/mosquitto.conf` file (property `password_file`).
-4. Change password for user `z2m` the same way
-   ```sh
-   mosquitto_passwd /mosquitto/config/password_file z2m
-   ```
-   It is recommended to use different password
+4. Change password for users `z2m` and `nodered` the same way. It is recommended to use different password
 5. Type `exit` in order to finish your command shell session inside `mqtt` container
    ```sh
    exit
@@ -160,3 +172,4 @@ List of services (containers):
    ```sh
    docker compose restart z2m
    ```
+12. Use the new password inside Node-RED interface
