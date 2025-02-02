@@ -87,11 +87,11 @@ List of services (containers):
    ```
 10. Go to `Settings` -> `Dashboards` -> `Add dashboard` -> `Webpage` and add web panels in HA web interface
 
-   | Service     | Url                       |
-   |-------------|---------------------------|
-   | HA Editor   | http://<ha-host>:**3218** |
-   | Zigbee2MQTT | http://<ha-host>:**8080** |
-   | Node-RED    | http://<ha-host>:**1880** |
+   | Service     | Url                         |
+   |-------------|-----------------------------|
+   | HA Editor   | http://\<ha-host\>:**3218** |
+   | Zigbee2MQTT | http://\<ha-host\>:**8080** |
+   | Node-RED    | http://\<ha-host\>:**1880** |
 
 11. Add **MQTT** integration
     1. Go to `Settings` -> `Devices & services` -> `Add integration` -> `MQTT` -> `MQTT`
