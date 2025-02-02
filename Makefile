@@ -1,9 +1,15 @@
+DC=docker compose --progress plain
+
 up:
-	docker compose up -d
+	$(DC) up -d
 
 down:
-	docker compose down
+	$(DC) down
 
 logs:
-	docker compose logs
+	$(DC) logs
 
+cold-backup:
+	$(DC) pause
+	-./create-backup.sh
+	$(DC) unpause

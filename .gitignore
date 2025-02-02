@@ -1,5 +1,6 @@
 /data
 .env
+/backups
 
 ### IntelliJ IDEA ###
 .idea
