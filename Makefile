@@ -11,5 +11,6 @@ logs:
 
 cold-backup:
 	$(DC) pause
-	-./create-backup.sh
+	-./sync-work-tree.sh
 	$(DC) unpause
+	./backup-work-tree.sh
