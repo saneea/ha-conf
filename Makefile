@@ -9,8 +9,3 @@ down:
 logs:
 	$(DC) logs
 
-cold-backup:
-	$(DC) pause
-	-./sync-work-tree.sh
-	$(DC) unpause
-	./backup-work-tree.sh
