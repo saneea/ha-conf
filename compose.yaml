@@ -1,6 +1,6 @@
 services:
   ha:
-    image: homeassistant/home-assistant:2025.4.3
+    image: homeassistant/home-assistant:2025.7.1
     restart: unless-stopped
     privileged: true
     ports:
