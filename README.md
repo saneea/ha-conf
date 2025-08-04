@@ -44,25 +44,29 @@ List of services (containers):
    ```sh
    cd ./ha-conf
    ```
-3. Create `.env` file from example
+3. Create `compose.yaml` file from example
+   ```sh
+   cp ./compose.yaml.example ./compose.yaml
+   ```
+4. Create `.env` file from example
    ```sh
    cp ./.env.example ./.env
    ```
-4. Create `data` directory from example
+5. Create `data` directory from example
    ```sh
    cp -r ./data.example ./data
    ```
-5. Change owner of `data` directory (and nested files) to `root` user
+6. Change owner of `data` directory (and nested files) to `root` user
    (because some docker containers may complain about non-root-owner files)
    ```sh
    chown -R root:root ./data
    ```
-6. Create `node-red` dirs with uid 1000 owner.
+7. Create `node-red` dirs with uid 1000 owner.
    ```sh
    mkdir -p ./data/node-red/data
    chown -R 1000:1000 ./data/node-red
    ```
-7. Find out your Zigbee stick device file
+8. Find out your Zigbee stick device file
    ```sh
    ls /dev/serial/by-id
    ```
@@ -73,11 +77,11 @@ List of services (containers):
    drwxr-xr-x 4 root root 80 Jan  7 22:08 ..
    lrwxrwxrwx 1 root root 13 Jan  7 22:08 usb-Itead_Sonoff_Zigbee_3.0_USB_Dongle_Plus_V2_... -> ../../ttyUSB0
    ```
-8. Specify full path to your Zigbee stick device file (from previous step) into `.env` file as variable `ZIGBEE_ADAPTER_TTY`
+9. Specify full path to your Zigbee stick device file (from previous step) into `.env` file as variable `ZIGBEE_ADAPTER_TTY`
    ```sh
    vi ./.env
    ```
-9. Start your docker compose stack with shortcut command
+10. Start your docker compose stack with shortcut command
    ```sh
    make up
    ```
@@ -85,7 +89,7 @@ List of services (containers):
    ```sh
    docker compose up -d
    ```
-10. Go to `Settings` -> `Dashboards` -> `Add dashboard` -> `Webpage` and add web panels in HA web interface
+11. Go to `Settings` -> `Dashboards` -> `Add dashboard` -> `Webpage` and add web panels in HA web interface
 
    | Service     | Url                         |
    |-------------|-----------------------------|
@@ -93,7 +97,7 @@ List of services (containers):
    | Zigbee2MQTT | http://\<ha-host\>:**8080** |
    | Node-RED    | http://\<ha-host\>:**1880** |
 
-11. Add **MQTT** integration
+12. Add **MQTT** integration
     1. Go to `Settings` -> `Devices & services` -> `Add integration` -> `MQTT` -> `MQTT`
     2. Fill `broker` field with value `mqtt`.
        Why does it work? Your docker compose file `compose.yaml` contains service with name `mqtt`. By default, docker use the name of service as hostname for internal docker network.
@@ -103,7 +107,7 @@ List of services (containers):
        You can change it (see [Change MQTT broker port](#change-mqtt-broker-port) section).
     4. Fill `username` and `password` fields with values `ha` and `ha-change-this-password`
        These are default `username` and `password`. You should change them (see [Change MQTT users](#change-mqtt-users) section).
-12. Set up your Node-RED system
+13. Set up your Node-RED system
     1. Create **HA** token in order to access from Node-RED to **HA**. Go to **HA** web interface -> you user profile -> `Security` tab -> `Long-lived access tokens`.
     2. Go to Node-RED menu -> `Manage palette` -> `Install`. Try to find and install `node-red-contrib-home-assistant-websocket` module.
     3. Use some node in order to connect to **HA**. E.g. `events: all`. Connect to **HA** using security token from previous steps.
