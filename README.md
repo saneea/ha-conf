@@ -13,6 +13,8 @@ List of services (containers):
 - ha-conf - just web interface for configuring **Home Assistant** files
 - mqtt - MQTT broker is some type of gateway which join different devices and services via event messages in queue
 - z2m - Zigbee2MQTT is a bridge between MQTT broker and zigbee devices
+- pg - PostgreSQL is database for storing your **HA** data
+- adminer - is just a tool to manage database (you can use it for manage your PostgreSQL)
 
 ## Prepare host machine
 
@@ -81,7 +83,11 @@ List of services (containers):
    ```sh
    vi ./.env
    ```
-10. Start your docker compose stack with shortcut command
+10. Change password for PostgreSQL in `.env` file as variable `PG_PASSWORD`
+   ```sh
+   vi ./.env
+   ```
+11. Start your docker compose stack with shortcut command
    ```sh
    make up
    ```
@@ -89,7 +95,7 @@ List of services (containers):
    ```sh
    docker compose up -d
    ```
-11. Go to `Settings` -> `Dashboards` -> `Add dashboard` -> `Webpage` and add web panels in HA web interface
+12. Go to `Settings` -> `Dashboards` -> `Add dashboard` -> `Webpage` and add web panels in HA web interface
 
    | Service     | Url                         |
    |-------------|-----------------------------|
@@ -97,7 +103,7 @@ List of services (containers):
    | Zigbee2MQTT | http://\<ha-host\>:**8080** |
    | Node-RED    | http://\<ha-host\>:**1880** |
 
-12. Add **MQTT** integration
+13. Add **MQTT** integration
     1. Go to `Settings` -> `Devices & services` -> `Add integration` -> `MQTT` -> `MQTT`
     2. Fill `broker` field with value `mqtt`.
        Why does it work? Your docker compose file `compose.yaml` contains service with name `mqtt`. By default, docker use the name of service as hostname for internal docker network.
@@ -107,7 +113,7 @@ List of services (containers):
        You can change it (see [Change MQTT broker port](#change-mqtt-broker-port) section).
     4. Fill `username` and `password` fields with values `ha` and `ha-change-this-password`
        These are default `username` and `password`. You should change them (see [Change MQTT users](#change-mqtt-users) section).
-13. Set up your Node-RED system
+14. Set up your Node-RED system
     1. Create **HA** token in order to access from Node-RED to **HA**. Go to **HA** web interface -> you user profile -> `Security` tab -> `Long-lived access tokens`.
     2. Go to Node-RED menu -> `Manage palette` -> `Install`. Try to find and install `node-red-contrib-home-assistant-websocket` module.
     3. Use some node in order to connect to **HA**. E.g. `events: all`. Connect to **HA** using security token from previous steps.
@@ -141,6 +147,32 @@ List of services (containers):
 4. Start your docker compose stack with shortcut command
    ```sh
    make up
+   ```
+
+### Use PostgreSQL
+
+1. Make sure your **HA** is working (you are able to interact with it via web UI).
+   It is important step because you will need to restart your **HA** from web UI soon.
+2. For this moment you should already have PostgreSQL container with your password (see `PG_PASSWORD` variable in your `.env` file)
+3. Add `pg_db_connect_url` variable to your `./data/ha/config/secrets.yaml`
+   ```yaml
+   ...
+   pg_db_connect_url: "postgresql://postgres:<your-pg-password-from-.env-file>@pg:5432/postgres"
+   ...
+   ```
+4. Add custom configuration to **HA** config file `./data/ha/config/configuration.yaml`
+   ```yaml
+   ...
+   recorder:
+     db_url: !secret pg_db_connect_url
+     purge_keep_days: 7
+   ...
+   ```
+5. Restart your **HA** from web UI:
+   `Menu` -> `Developer tools` -> `Check configuration` -> make sure you can see something like `Configuration will not prevent Home Assistant from starting!` -> `Restart`
+6. Now you can remove your old unused sqlite database file
+   ```sh
+   rm ./data/ha/config/home-assistant_v2.db
    ```
 
 ### Change MQTT broker port
