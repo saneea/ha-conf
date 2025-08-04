@@ -116,6 +116,33 @@ List of services (containers):
 
 ## Customization
 
+### Change **HA** port
+
+1. Make 'down' your docker compose stack with shortcut command
+   ```sh
+   make down
+   ```
+2. Add custom configuration to **HA** config file `./data/ha/config/configuration.yaml`
+   ```yaml
+   ...
+   http:
+     server_port: 80
+   ...
+   ```
+3. Change port mapping from `8123:8123` to `80:80` in your compose file `./compose.yaml`
+   ```yaml
+   ...
+   services:
+     ha:
+       ports:
+         - "80:80"
+   ...
+   ```
+4. Start your docker compose stack with shortcut command
+   ```sh
+   make up
+   ```
+
 ### Change MQTT broker port
 
 1. Change MQTT broker port in config file `./data/mqtt/config/mosquitto.conf`
