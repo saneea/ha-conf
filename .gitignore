@@ -1,5 +1,6 @@
 /data
 .env
+compose.yaml
 /backups
 
 ### IntelliJ IDEA ###
