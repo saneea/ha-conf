@@ -57,7 +57,7 @@ services:
       - ./data/mqtt/log:/mosquitto/log
 
   z2m:
-    image: koenkk/zigbee2mqtt:1.42.0
+    image: koenkk/zigbee2mqtt:2.6.3
     restart: unless-stopped
     ports:
       - "8080:8080"
